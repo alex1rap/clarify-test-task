@@ -69,7 +69,6 @@ watch(() => parserType.value, (value) => {
       <div id="result" v-if="result">
         <h3>Result:</h3>
         <pre>{{ result }}</pre>
-        <b-table v-if="parserType === 'keays'" :items="result"></b-table>
       </div>
     </div>
   </MainPage>
