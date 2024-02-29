@@ -11,7 +11,7 @@ export default class Api {
     }
 
     static async createCarrier(carrier) {
-        return await fetch('${this.PREFIX}/carriers', {
+        return await fetch(`${this.PREFIX}/carriers`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export default class Api {
     static async deleteCarrier(carrier) {
         return await fetch(`${this.PREFIX}/carriers/${carrier.id}`, {
             method: 'DELETE',
-        }).then(res => res.json());
+        });
     }
 
     static async getDeliveryCost(carrier, weight) {
