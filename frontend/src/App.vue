@@ -1,26 +1,20 @@
-<template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
-</template>
+<script setup>
+import {getCurrentInstance} from 'vue'
+import pageTitle from "./components/PageTitle";
+import {useRoute, useRouter} from "vue-router";
 
-<script>
-import HelloWorld from "./components/HelloWorld.vue";
+const _route = useRoute()
+const router = useRouter()
 
-export default {
-  name: "App",
-  components: {
-    HelloWorld,
-  },
-};
+const _app = getCurrentInstance()
+
+// Change page title
+router.afterEach(async (to, _) => {
+  document.title = pageTitle(to.meta?.title)
+})
+
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<template>
+  <router-view></router-view>
+</template>
