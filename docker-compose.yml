@@ -1,0 +1,71 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+    volumes:
+      - ./backend:/var/www:rw,cached
+    networks:
+      - main
+    depends_on:
+      - postgres
+    ports:
+      - "9000:9000"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    environment:
+      - VUE_APP_API_URL=${VUE_APP_API_URL}
+    volumes:
+      - ./frontend:/app:rw,cached
+    command: >
+      sh -c "npm install && npm run build && npm run serve"
+    ports:
+      - "8080:8080"
+    networks:
+      - main
+
+  postgres:
+    image: postgres:15.6
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    networks:
+      - main
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend/dist:/var/www/frontend
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - main
+
+  traefik:
+    image: "traefik:v2.2"
+    ports:
+      - "8000:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --api.insecure=true --providers.docker
+    networks:
+      - main
+
+networks:
+  main:
+    driver: bridge
