@@ -29,13 +29,12 @@ class TextManagementService
     public function handleKeys(string $text): array
     {
         $matches = [];
-        preg_match_all('/\b(?:one|two|three): (.*?)(?=\b(?:one|two|three): |$)/s', $text, $matches);
+        preg_match_all('/\b(\w+): (.*?)(?=\b\w+: |$)/s', $text, $matches);
 
         $result = [];
         foreach ($matches[0] as $key => $value) {
-            preg_match('/\b(?:one|two|three)\b/', $value, $keyMatches);
-            $keyName = $keyMatches[0];
-            $result[$keyName] = trim($matches[1][$key]);
+            $keyName = $matches[1][$key];
+            $result[$keyName] = trim($matches[2][$key]);
         }
 
         return $result;
