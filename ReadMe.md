@@ -121,7 +121,7 @@ docker-compose up -d
 Тогда структура была бы следующей:
 
 - `App\Service\Carrier\CarrierInterface` - интерфейс для всех перевозчиков с обязательным
-  методом `calculateCost(float $weight)`
+  методом `calculateCost(float $weight): float`
 - `App\Service\Carrier\TransCompany` - класс для перевозчика TransCompany, который реализовывает
   интерфейс `CarrierInterface`, подсчитывая стоимость доставки по своей формуле, в данном случае было бы так:
 
