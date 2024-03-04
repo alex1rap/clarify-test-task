@@ -24,6 +24,6 @@ WORKDIR /var/www
 # за два дня я перепробовал кучу вариантов данного конфига, но `php-fpm` постоянно сбрасывает соединение (даже при
 # попытке подключиться к нему изнутри его же контейнера) и при этом ничего не пишет в логи, поэтому для разработки
 # пришлось ограничиться встроенным сервером php
-CMD composer i -o ; wait-for-it postgres:5432 -- bin/console doctrine:migrations:migrate; bin/console doctrine:fixtures:load; php -S 0.0.0.0:9000 -t public
+CMD composer i -o ; wait-for-it postgres:5432 -- bin/console doctrine:migrations:migrate; bin/console doctrine:fixtures:load  --no-interaction; php -S 0.0.0.0:9000 -t public
 
 EXPOSE 9000
